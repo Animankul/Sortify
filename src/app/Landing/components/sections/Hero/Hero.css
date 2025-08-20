@@ -1,0 +1,73 @@
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(100px);
+  opacity: 0.3;
+  z-index: 0;
+  will-change: transform;
+  animation: float 12s ease-in-out infinite;
+}
+
+.blob-1 {
+  width: 350px;
+  height: 350px;
+  top: -80px;
+  left: -80px;
+  background: #d8b4fe;
+}
+
+.blob-2 {
+  width: 400px;
+  height: 400px;
+  top: 200px;
+  right: -100px;
+  background: #a78bfa;
+  animation-duration: 14s;
+}
+
+.blob-3 {
+  width: 300px;
+  height: 300px;
+  bottom: -50px;
+  left: 40%;
+  background: #c084fc;
+  animation-duration: 18s;
+}
+
+.blob-core {
+  width: 320px;
+  height: 320px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #a855f7, #6b21a8);
+  animation: pulse-blur 4s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+  will-change: transform;
+}
+
+/* Smooth float motion */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0px, 0px);
+  }
+  25% {
+    transform: translate(-20px, 20px);
+  }
+  50% {
+    transform: translate(30px, -40px);
+  }
+  75% {
+    transform: translate(-10px, 10px);
+  }
+}
+
+/* Core glowing pulse */
+@keyframes pulse-blur {
+  0%, 100% {
+    transform: scale(1);
+    filter: blur(20px);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: blur(30px);
+  }
+}
