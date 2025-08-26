@@ -1,8 +1,10 @@
-// src/app/dashboard/myfiles/page.tsx
-'use client';
 
-import Trash from '../components/Trash';
-
-export default function MyFilesPage() {
-  return <Trash />;
+const page = () => {
+  return (
+    <div>
+      
+    </div>
+  )
 }
+
+export default page
