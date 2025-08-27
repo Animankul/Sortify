@@ -15,7 +15,8 @@ export default function FolderCard({ onClose }: FolderCardProps) {
       alert('Please enter a folder name');
       return;
     }
-    alert(Folder Created: ${folderName});
+    alert(`Folder Created: ${folderName}`);
+
     setFolderName('');
     onClose();
   };
