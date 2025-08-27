@@ -2,19 +2,17 @@
 'use client';
 
 import {
-  FaEllipsisV,
   FaFileArchive,
   FaFilePdf,
   FaFileWord,
+  FaTrash,
+  FaUndo,
 } from 'react-icons/fa';
 
-const files = [
-  { name: 'Resume.pdf', date: 'Dec 12, 2025', size: '600 KB', type: 'pdf' },
-  { name: 'imp.docx', date: 'Dec 12, 2024', size: '1 MB', type: 'doc' },
-  { name: 'game.zip', date: 'Dec 12, 2024', size: '50 MB', type: 'zip' },
-  { name: 'imp.docx', date: 'Dec 12, 2024', size: '1 MB', type: 'doc' },
-  { name: 'imp.docx', date: 'Dec 12, 2024', size: '1 MB', type: 'doc' },
-  { name: 'game.zip', date: 'Dec 12, 2024', size: '50 MB', type: 'zip' },
+const trashedFiles = [
+  { name: 'old_resume.pdf', dateDeleted: 'Jan 5, 2025', size: '500 KB', type: 'pdf' },
+  { name: 'draft.docx', dateDeleted: 'Dec 20, 2024', size: '2 MB', type: 'doc' },
+  { name: 'backup.zip', dateDeleted: 'Nov 15, 2024', size: '80 MB', type: 'zip' },
 ];
 
 const getFileIcon = (type: string) => {
@@ -30,20 +28,15 @@ const getFileIcon = (type: string) => {
   }
 };
 
-export default function MyFiles() {
+export default function TrashPage() {
   return (
     <div className="p-6 text-black">
-      <h2 className="text-xl font-bold mb-4">My files</h2>
+      <h2 className="text-xl font-bold mb-4">Trash</h2>
 
-      {/* Filters */}
-      <div className="flex gap-4 mb-4">
-        <select className="bg-white border border-gray-300 rounded px-3 py-1 text-sm shadow-sm">
-          <option>Type</option>
-        </select>
-        <select className="bg-white border border-gray-300 rounded px-3 py-1 text-sm shadow-sm">
-          <option>Modified</option>
-        </select>
-      </div>
+      {/* Info */}
+      <p className="text-sm text-gray-500 mb-4">
+        Files in Trash are deleted permanently after 30 days.
+      </p>
 
       {/* File Table */}
       <div className="bg-white rounded-xl shadow p-4 overflow-x-auto">
@@ -51,13 +44,13 @@ export default function MyFiles() {
           <thead>
             <tr className="text-left border-b text-gray-500">
               <th className="p-2">Name</th>
-              <th className="p-2">Modified</th>
+              <th className="p-2">Deleted On</th>
               <th className="p-2">Size</th>
-              <th className="p-2"></th>
+              <th className="p-2 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {files.map((file, index) => (
+            {trashedFiles.map((file, index) => (
               <tr
                 key={index}
                 className="transition hover:shadow-md hover:rounded-xl"
@@ -66,10 +59,17 @@ export default function MyFiles() {
                   {getFileIcon(file.type)}
                   <span>{file.name}</span>
                 </td>
-                <td className="p-3">{file.date}</td>
+                <td className="p-3">{file.dateDeleted}</td>
                 <td className="p-3">{file.size}</td>
-                <td className="p-3 text-right">
-                  <FaEllipsisV className="text-gray-500 cursor-pointer" />
+                <td className="p-3 text-right flex justify-end gap-3">
+                  {/* Restore */}
+                  <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+                    <FaUndo className="text-green-600" /> Restore
+                  </button>
+                  {/* Delete Permanently */}
+                  <button className="flex items-center gap-1 px-3 py-1 text-xs rounded-lg border border-red-300 text-red-600 hover:bg-red-50 transition">
+                    <FaTrash /> Delete
+                  </button>
                 </td>
               </tr>
             ))}

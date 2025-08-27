@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FaBell,
   FaChartLine,
@@ -13,13 +13,44 @@ import {
   FaTrash
 } from 'react-icons/fa';
 import SidebarItem from './SidebarItem';
+import UploadCard from './UploadCard';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewMenu, setShowNewMenu] = useState(false);
 
+  // File Upload State
+  const [selectedFile, setSelectedFile] = useState<{
+    name: string;
+    type: string;
+    size: string;
+  } | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const folderInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (folderInputRef.current) {
+      // Add folder selection attributes manually
+      folderInputRef.current.setAttribute('webkitdirectory', '');
+      folderInputRef.current.setAttribute('directory', '');
+    }
+  }, []);
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile({
+        name: file.name,
+        type: file.type || 'Unknown',
+        size: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
+      });
+    }
+  };
+
   return (
     <>
+      {/* Mobile Toggle Button */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 bg-blue-500 text-white p-2 rounded"
         onClick={() => setIsOpen(!isOpen)}
@@ -27,10 +58,14 @@ export default function Sidebar() {
         <FaFolder />
       </button>
 
-      <aside className={`fixed z-40 top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative`}>
+      {/* Sidebar */}
+      <aside
+        className={`fixed z-40 top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative`}
+      >
         <div className="p-6 flex flex-col justify-between h-full text-black relative">
           <div>
+            {/* Logo */}
             <div className="flex items-center mb-8">
               <img src="/logo.png" alt="Sortify Logo" className="h-10 w-10 mr-3" />
               <span className="text-xl font-bold">SORTIFY</span>
@@ -57,13 +92,13 @@ export default function Sidebar() {
                     </li>
                     <li
                       className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => alert('Upload File')}
+                      onClick={() => fileInputRef.current?.click()}
                     >
                       <FaFileUpload className="mr-2" /> Upload File
                     </li>
                     <li
                       className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => alert('Upload Folder')}
+                      onClick={() => folderInputRef.current?.click()}
                     >
                       <FaFolderOpen className="mr-2" /> Upload Folder
                     </li>
@@ -94,6 +129,26 @@ export default function Sidebar() {
           </div>
         </div>
       </aside>
+
+      {/* Hidden Inputs for File/Folder Upload */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        onChange={handleFileUpload}
+      />
+      <input
+        type="file"
+        ref={folderInputRef}
+        className="hidden"
+        multiple
+        onChange={handleFileUpload}
+      />
+
+      {/* Upload Card Modal */}
+      {selectedFile && (
+        <UploadCard file={selectedFile} onClose={() => setSelectedFile(null)} />
+      )}
     </>
   );
 }
