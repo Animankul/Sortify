@@ -14,7 +14,8 @@ import {
 } from 'react-icons/fa';
 import SidebarItem from './SidebarItem';
 import UploadCard from './UploadCard';
-
+import Link from "next/link"; 
+import FolderCard from './FolderCard';
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewMenu, setShowNewMenu] = useState(false);
@@ -28,6 +29,7 @@ export default function Sidebar() {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const folderInputRef = useRef<HTMLInputElement | null>(null);
+const [showFolderCard, setShowFolderCard] = useState(false);
 
   useEffect(() => {
     if (folderInputRef.current) {
@@ -65,11 +67,11 @@ export default function Sidebar() {
       >
         <div className="p-6 flex flex-col justify-between h-full text-black relative">
           <div>
-            {/* Logo */}
-            <div className="flex items-center mb-8">
-              <img src="/logo.png" alt="Sortify Logo" className="h-10 w-10 mr-3" />
-              <span className="text-xl font-bold">SORTIFY</span>
-            </div>
+           {/* Logo */}
+<Link href="/Landing" className="flex items-center mb-8 cursor-pointer">
+  <img src="/logo.png" alt="Sortify Logo" className="h-10 w-10 mr-3" />
+  <span className="text-xl font-bold">SORTIFY</span>
+</Link>
 
             {/* + New Button */}
             <div className="relative">
@@ -84,12 +86,12 @@ export default function Sidebar() {
               {showNewMenu && (
                 <div className="absolute z-50 bg-white shadow-lg rounded-lg w-full mt-[-12px] mb-6">
                   <ul className="flex flex-col p-2 text-sm text-gray-800">
-                    <li
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => alert('Create New Folder')}
-                    >
-                      <FaFolderPlus className="mr-2" /> New Folder
-                    </li>
+                   <li
+  className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+  onClick={() => setShowFolderCard(true)}
+>
+  <FaFolderPlus className="mr-2" /> New Folder
+</li>
                     <li
                       className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => fileInputRef.current?.click()}
@@ -149,6 +151,13 @@ export default function Sidebar() {
       {selectedFile && (
         <UploadCard file={selectedFile} onClose={() => setSelectedFile(null)} />
       )}
+      {/* Folder Card Modal */}
+{showFolderCard && (
+  <FolderCard
+    onClose={() => setShowFolderCard(false)}
+    onCreate={(name) => console.log("Created Folder:", name)}
+  />
+)}
     </>
   );
 }

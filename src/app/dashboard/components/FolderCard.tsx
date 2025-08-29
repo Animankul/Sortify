@@ -1,13 +1,13 @@
-
 'use client';
 
 import { useState } from 'react';
 
 interface FolderCardProps {
   onClose: () => void;
+  onCreate: (name: string) => void; // ✅ added
 }
 
-export default function FolderCard({ onClose }: FolderCardProps) {
+export default function FolderCard({ onClose, onCreate }: FolderCardProps) {
   const [folderName, setFolderName] = useState('');
 
   const handleSave = () => {
@@ -15,8 +15,8 @@ export default function FolderCard({ onClose }: FolderCardProps) {
       alert('Please enter a folder name');
       return;
     }
-    alert(`Folder Created: ${folderName}`);
 
+    onCreate(folderName); // ✅ send folder name back to parent
     setFolderName('');
     onClose();
   };
